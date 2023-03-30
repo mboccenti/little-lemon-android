@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private suspend fun fetchMenu(): List<MenuItemNetwork> {
-        val url: String = "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
+        val url = "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
         val menuNetwork: MenuNetwork = httpClient.get(url).body()
         return menuNetwork.menu
     }

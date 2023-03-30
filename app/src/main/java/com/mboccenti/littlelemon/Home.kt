@@ -1,8 +1,6 @@
 package com.mboccenti.littlelemon
 
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
-import android.view.MenuItem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +10,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,10 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mboccenti.littlelemon.component.Header
-import com.bumptech.glide.integration.compose.GlideImage
-import androidx.compose.runtime.livedata.observeAsState
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
 @Composable
 fun Home(navController: NavController, database: AppDatabase) {
@@ -40,10 +36,10 @@ fun Home(navController: NavController, database: AppDatabase) {
 
     var categoryFilterText by remember { mutableStateOf("") }
     val onChangeCategoryFilter: (String) -> (Unit) = {
-        if (categoryFilterText == it) {
-            categoryFilterText = ""
+        categoryFilterText = if (categoryFilterText == it) {
+            ""
         } else {
-            categoryFilterText = it
+            it
         }
     }
 
@@ -96,7 +92,7 @@ fun Hero(searchText: TextFieldValue, onChangeSearch: (TextFieldValue) -> (Unit))
 
     val context = LocalContext.current
     val inputStream = context.assets.open("hero.png")
-    val hero_image = BitmapFactory.decodeStream(inputStream).asImageBitmap()
+    val heroImage = BitmapFactory.decodeStream(inputStream).asImageBitmap()
 
     Box(
         modifier = Modifier
@@ -104,13 +100,13 @@ fun Hero(searchText: TextFieldValue, onChangeSearch: (TextFieldValue) -> (Unit))
             .fillMaxWidth()
             .padding(10.dp, 10.dp, 10.dp, 10.dp)
     ) {
-        Column() {
+        Column {
             Text("Little Lemon",
                 color = Color(0xFFF4CE14),
                 fontSize = 36.sp,
             )
-            Row() {
-                Column() {
+            Row {
+                Column {
                     Text(
                         "Chicago",
                         color = Color(0xFFFFFFFF),
@@ -128,7 +124,7 @@ fun Hero(searchText: TextFieldValue, onChangeSearch: (TextFieldValue) -> (Unit))
                             .padding(0.dp, 15.dp, 0.dp, 0.dp)
                     )
                 }
-                Image(bitmap = hero_image, contentDescription = "hero",
+                Image(bitmap = heroImage, contentDescription = "hero",
                     modifier = Modifier
                         .padding(50.dp, 0.dp, 20.dp, 10.dp)
                         .clip(shape = RoundedCornerShape(30.dp))
@@ -152,14 +148,14 @@ fun Hero(searchText: TextFieldValue, onChangeSearch: (TextFieldValue) -> (Unit))
 
 @Composable
 fun MenuBreakdown(categoryFilterText: String, onChangeCategoryFilter: (String) -> (Unit)) {
-    Box() {
-        Column() {
+    Box {
+        Column {
             Text("ORDER FOR DELIVERY!",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(5.dp, 15.dp, 0.dp, 0.dp))
-            Row() {
+            Row {
                 FilterButton("Starters", categoryFilterText, onChangeCategoryFilter)
                 FilterButton("Mains", categoryFilterText, onChangeCategoryFilter)
                 FilterButton("Desserts", categoryFilterText, onChangeCategoryFilter)
@@ -174,7 +170,7 @@ fun MenuItems(database: AppDatabase, searchText: TextFieldValue, categoryFilterT
 
     val databaseMenuItems by database.menuItemDao().getAll().observeAsState(emptyList())
 
-    LazyColumn() {
+    LazyColumn {
         itemsIndexed(databaseMenuItems.filter {
             it.title.contains(
                 searchText.text,
@@ -235,7 +231,7 @@ fun MenuItem(title: String, description: String, price: String, image: String) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column (){
+        Column {
             Text(
                 text = title,
             )

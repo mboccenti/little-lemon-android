@@ -55,7 +55,7 @@ fun Profile(navController: NavController, sharedPreferences: SharedPreferences) 
 
         Button(
             onClick = {
-                var edit = sharedPreferences.edit()
+                val edit = sharedPreferences.edit()
                 edit.putString("firstName", "")
                 edit.putString("lastName", "")
                 edit.putString("email", "")
