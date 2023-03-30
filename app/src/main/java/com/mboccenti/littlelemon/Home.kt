@@ -227,7 +227,7 @@ fun MenuItem(title: String, description: String, price: String, image: String) {
         Modifier
             .fillMaxWidth()
             .height(120.dp)
-            .background(Color.White)
+
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

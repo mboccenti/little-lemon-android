@@ -103,7 +103,7 @@ fun InputFields(navController: NavController, sharedPreferences: SharedPreferenc
                           email.text.isBlank() ) {
                       Toast.makeText(context, "Registration unsuccessful. Please enter all data.", Toast.LENGTH_SHORT).show()
                   } else {
-                      var edit = sharedPreferences.edit()
+                      val edit = sharedPreferences.edit()
                       edit.putString("firstName", firstName.text)
                       edit.putString("lastName", lastName.text)
                       edit.putString("email", email.text)
